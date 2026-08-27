@@ -96,6 +96,9 @@ dependencies = [
 attention = [
     "flash_attn",
 ]
+data-convert = [
+    "pyarrow>=15.0.0",
+]
 fast-infer = [
     "onnx==1.21.0",
     "triton==3.6.0",

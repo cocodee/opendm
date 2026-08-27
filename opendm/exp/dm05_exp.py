@@ -90,6 +90,19 @@ class DM05ModelConfig(Config):
         config = DM05Config.from_pretrained(self.model_name_or_path)
         for attr, value in self._config_overrides().items():
             setattr(config, attr, value)
+        # Attention backends must be applied before constructing the nested VLM.
+        # Otherwise Transformers validates the checkpoint's persisted backend
+        # (often flash_attention_2) before _apply_runtime_model_options runs.
+        if self.llm_attn_implementation != "auto":
+            config.vlm_config._attn_implementation = self.llm_attn_implementation
+            if hasattr(config.vlm_config, "text_config"):
+                config.vlm_config.text_config._attn_implementation = (
+                    self.llm_attn_implementation
+                )
+        if self.vision_attn_implementation != "auto":
+            config.vlm_config.vision_config._attn_implementation = (
+                self.vision_attn_implementation
+            )
         return DM05ForConditionalGeneration.from_pretrained(
             self.model_name_or_path,
             config=config,

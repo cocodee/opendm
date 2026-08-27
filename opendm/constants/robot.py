@@ -26,6 +26,7 @@ class RobotType(Enum):
     SO101 = "SO101"
     ARX5 = "ARX5"
     UR5 = "UR5"
+    SUPRE = "Supre"
 
 
 ROBOT_STATE_DESCS = {
@@ -44,4 +45,11 @@ ROBOT_STATE_DESCS = {
     RobotType.SO101: [RobotStateDesc.JOINT] * 5 + [RobotStateDesc.GRIPPER],
     RobotType.ARX5: [RobotStateDesc.JOINT] * 6 + [RobotStateDesc.GRIPPER],
     RobotType.UR5: [RobotStateDesc.EEF] * 6 + [RobotStateDesc.GRIPPER],
+    RobotType.SUPRE: (
+        [RobotStateDesc.JOINT] * 6
+        + [RobotStateDesc.GRIPPER]
+        + [RobotStateDesc.JOINT] * 6
+        + [RobotStateDesc.GRIPPER]
+        + [RobotStateDesc.JOINT] * 2
+    ),
 }
